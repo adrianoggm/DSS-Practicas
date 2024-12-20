@@ -77,8 +77,12 @@ public class SecurityConfig {
             )
             .addFilterBefore(new CustomApiLoginFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class)
             .csrf(csrf -> csrf
+            	.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")) // Ignorar CSRF para H2 Console
                 .ignoringRequestMatchers(new AntPathRequestMatcher("/api/**"), new AntPathRequestMatcher("/login"))
             )
+            .headers(headers -> headers
+                    .frameOptions(frameOptions -> frameOptions.disable()) // Permitir iframes para H2 Console
+                )
             .sessionManagement(sessionManagement -> sessionManagement
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 
