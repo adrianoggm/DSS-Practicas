@@ -18,6 +18,8 @@ public class AdminController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private OrderServiceImpl orderService;
     
 
     @GetMapping
@@ -44,5 +46,10 @@ public class AdminController {
         headers.add(HttpHeaders.CONTENT_TYPE, "application/sql");
 
         return new ResponseEntity<>(sqlScript.getBytes(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/orders")
+    public String showOrdersPage(Model model) {
+        model.addAttribute("orders", orderService.getAllOrders());
+        return "orders"; // Asegúrate de que existe `orders.html`
     }
 }
